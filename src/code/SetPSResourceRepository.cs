@@ -166,7 +166,7 @@ namespace Microsoft.PowerShell.PowerShellGet.Cmdlets
         {
             if (repoUri != null && !(repoUri.Scheme == System.Uri.UriSchemeHttp || repoUri.Scheme == System.Uri.UriSchemeHttps || repoUri.Scheme == System.Uri.UriSchemeFtp || repoUri.Scheme == System.Uri.UriSchemeFile))
             {
-                throw new ArgumentException("Invalid URI, must be one of the following Uri schemes: HTTPS, HTTP, FTP, File Based");
+                throw new ArgumentException("Invalid URI, must be one of the following URI schemes: HTTPS, HTTP, FTP, File Based");
             }
 
             // check repoName can't contain * or just be whitespace
@@ -180,7 +180,7 @@ namespace Microsoft.PowerShell.PowerShellGet.Cmdlets
             // check PSGallery URI is not trying to be set
             if (repoName.Equals("PSGallery", StringComparison.OrdinalIgnoreCase) && repoUri != null)
             {
-                throw new ArgumentException("The PSGallery repository has a pre-defined URI.  Setting the -Uri parameter for this repository is not allowed, instead try running 'Register-PSResourceRepository -PSGallery'.");
+                throw new ArgumentException("The PSGallery repository has a pre-defined URI. Setting the -Uri parameter for this repository is not allowed, instead try running 'Register-PSResourceRepository -PSGallery'.");
             }
 
             // check PSGallery CredentialInfo is not trying to be set

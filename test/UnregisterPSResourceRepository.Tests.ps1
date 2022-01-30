@@ -24,7 +24,7 @@ Describe "Test Unregister-PSResourceRepository" {
     }
 
     It "unregister single repository previously registered" {
-        Register-PSResourceRepository -Name "testRepository" -URI $tmpDir1Path
+        Register-PSResourceRepository -Name "testRepository" -Uri $tmpDir1Path
         Unregister-PSResourceRepository -Name "testRepository"
 
         $res = Get-PSResourceRepository -Name "testRepository" -ErrorVariable err -ErrorAction SilentlyContinue
@@ -32,8 +32,8 @@ Describe "Test Unregister-PSResourceRepository" {
     }
 
     It "unregister multiple repositories previously registered" {
-        Register-PSResourceRepository -Name "testRepository" -URI $tmpDir1Path
-        Register-PSResourceRepository -Name "testRepository2" -URI $tmpDir2Path
+        Register-PSResourceRepository -Name "testRepository" -Uri $tmpDir1Path
+        Register-PSResourceRepository -Name "testRepository2" -Uri $tmpDir2Path
         Unregister-PSResourceRepository -Name "testRepository","testRepository2"
 
         $res = Get-PSResourceRepository -Name "testRepository","testRepository2" -ErrorVariable err -ErrorAction SilentlyContinue
@@ -56,7 +56,7 @@ Describe "Test Unregister-PSResourceRepository" {
 
     It "when multiple repo Names provided, if one name isn't valid unregister the rest and write error message" {
         $nonRegisteredRepoName = "nonRegisteredRepository"
-        Register-PSResourceRepository -Name "testRepository" -URI $tmpDir1Path
+        Register-PSResourceRepository -Name "testRepository" -Uri $tmpDir1Path
         Unregister-PSResourceRepository -Name $nonRegisteredRepoName,"testRepository" -ErrorVariable err -ErrorAction SilentlyContinue
         $err.Count | Should -Not -Be 0
         $err[0].FullyQualifiedErrorId | Should -BeExactly "ErrorUnregisteringSpecifiedRepo,Microsoft.PowerShell.PowerShellGet.Cmdlets.UnregisterPSResourceRepository"

@@ -222,7 +222,7 @@ namespace Microsoft.PowerShell.PowerShellGet.Cmdlets
             // if none are (i.e only Name parameter was provided, write error)
             if (repoUri == null && repoPriority == DefaultPriority && _trustedNullable == null && repoCredentialInfo == null)
             {
-                throw new ArgumentException("Either URL, Priority, Trusted or CredentialInfo parameters must be requested to be set");
+                throw new ArgumentException("Either Uri, Priority, Trusted or CredentialInfo parameters must be requested to be set");
             }
 
             WriteVerbose("All required values to set repository provided, calling internal Update() API now");

@@ -187,7 +187,7 @@ namespace Microsoft.PowerShell.PowerShellGet.UtilClasses
                     }
                 }
 
-                // Create Uri from node Url attribute to create PSRepositoryInfo item to return.
+                // Create Uri from node Uri attribute to create PSRepositoryInfo item to return.
                 if (!Uri.TryCreate(node.Attribute("Uri").Value, UriKind.Absolute, out Uri thisUri))
                 {
                     throw new PSInvalidOperationException(String.Format("Unable to read incorrectly formatted URI for repo {0}", repoName));

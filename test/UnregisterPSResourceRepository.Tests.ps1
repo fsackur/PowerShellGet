@@ -73,7 +73,7 @@ Describe "Test Unregister-PSResourceRepository" {
     It "unregister repository using -PassThru" {
         $res = Unregister-PSResourceRepository -Name $TestGalleryName -PassThru
         $res.Name | Should -Be $TestGalleryName
-        $Res.Url | Should -Be $TestGalleryUri
+        $Res.Uri | Should -Be $TestGalleryUri
         $res = Get-PSResourceRepository -Name $TestGalleryName -ErrorVariable err -ErrorAction SilentlyContinue
         $res | Should -BeNullOrEmpty
         $err.Count | Should -Not -Be 0

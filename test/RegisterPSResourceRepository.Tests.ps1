@@ -40,7 +40,7 @@ Describe "Test Register-PSResourceRepository" {
     It "register repository given Name, Uri (bare minimum for NameParmaterSet)" {
         $res = Register-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir1Path -PassThru
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Trusted | Should -Be False
         $res.Priority | Should -Be 50
     }
@@ -48,7 +48,7 @@ Describe "Test Register-PSResourceRepository" {
     It "register repository with Name, Uri, Trusted (NameParameterSet)" {
         $res = Register-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir1Path -Trusted -PassThru
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Trusted | Should -Be True
         $res.Priority | Should -Be 50
     }
@@ -56,7 +56,7 @@ Describe "Test Register-PSResourceRepository" {
     It "register repository given Name, Uri, Trusted, Priority (NameParameterSet)" {
         $res = Register-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir1Path -Trusted -Priority 20 -PassThru
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Trusted | Should -Be True
         $res.Priority | Should -Be 20
     }
@@ -64,7 +64,7 @@ Describe "Test Register-PSResourceRepository" {
     It "register repository given Name, Uri, Trusted, Priority, CredentialInfo (NameParameterSet)" {
         $res = Register-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir1Path -Trusted -Priority 20 -CredentialInfo $credentialInfo1 -PassThru
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Trusted | Should -Be True
         $res.Priority | Should -Be 20
         $res.CredentialInfo.VaultName | Should -Be "testvault"
@@ -107,22 +107,22 @@ Describe "Test Register-PSResourceRepository" {
 
         Register-PSResourceRepository -Repositories $arrayOfHashtables
         $res = Get-PSResourceRepository -Name $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Trusted | Should -Be False
         $res.Priority | Should -Be 50
 
         $res2 = Get-PSResourceRepository -Name $TestRepoName2
-        $res2.Url.LocalPath | Should -Contain $tmpDir2Path
+        $res2.Uri.LocalPath | Should -Contain $tmpDir2Path
         $res2.Trusted | Should -Be True
         $res2.Priority | Should -Be 50
 
         $res3 = Get-PSResourceRepository -Name $TestRepoName3
-        $res3.Url.LocalPath | Should -Contain $tmpDir3Path
+        $res3.Uri.LocalPath | Should -Contain $tmpDir3Path
         $res3.Trusted | Should -Be True
         $res3.Priority | Should -Be 20
 
         $res4 = Get-PSResourceRepository -Name $TestRepoName4
-        $res4.Url.LocalPath | Should -Contain $tmpDir4Path
+        $res4.Uri.LocalPath | Should -Contain $tmpDir4Path
         $res4.Trusted | Should -Be True
         $res4.Priority | Should -Be 30
         $res4.CredentialInfo.VaultName | Should -Be "testvault"
@@ -157,22 +157,22 @@ Describe "Test Register-PSResourceRepository" {
         $res1.Priority | Should -Be 50
 
         $res2 = Get-PSResourceRepository -Name $TestRepoName1
-        $res2.Url.LocalPath | Should -Contain $tmpDir1Path
+        $res2.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res2.Trusted | Should -Be False
         $res2.Priority | Should -Be 50
 
         $res3 = Get-PSResourceRepository -Name $TestRepoName2
-        $res3.Url.LocalPath | Should -Contain $tmpDir2Path
+        $res3.Uri.LocalPath | Should -Contain $tmpDir2Path
         $res3.Trusted | Should -Be True
         $res3.Priority | Should -Be 50
 
         $res4 = Get-PSResourceRepository -Name $TestRepoName3
-        $res4.Url.LocalPath | Should -Contain $tmpDir3Path
+        $res4.Uri.LocalPath | Should -Contain $tmpDir3Path
         $res4.Trusted | Should -Be True
         $res4.Priority | Should -Be 20
 
         $res5 = Get-PSResourceRepository -Name $TestRepoName4
-        $res5.Url.LocalPath | Should -Contain $tmpDir4Path
+        $res5.Uri.LocalPath | Should -Contain $tmpDir4Path
         $res5.Trusted | Should -Be True
         $res5.Priority | Should -Be 30
         $res5.CredentialInfo.VaultName | Should -Be "testvault"
@@ -222,7 +222,7 @@ Describe "Test Register-PSResourceRepository" {
         Unregister-PSResourceRepository -Name $PSGalleryName
         Register-PSResourceRepository -Repositories $arrayOfHashtables -ErrorVariable err -ErrorAction SilentlyContinue
         $err.Count | Should -Not -Be 0
-        $err[0].FullyQualifiedErrorId | Should -BeExactly "NotProvideNameUrlCredentialInfoForPSGalleryRepositoriesParameterSetRegistration,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"
+        $err[0].FullyQualifiedErrorId | Should -BeExactly "NotProvideNameUriCredentialInfoForPSGalleryRepositoriesParameterSetRegistration,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"
 
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
@@ -236,7 +236,7 @@ Describe "Test Register-PSResourceRepository" {
 
     $testCases2 = @{Type = "-Name is not specified";                     IncorrectHashTable = @{Uri = $tmpDir1Path};                           ErrorId = "NullNameForRepositoriesParameterSetRegistration,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"},
                   @{Type = "-Name is PSGallery";                         IncorrectHashTable = @{Name = $PSGalleryName; Uri = $tmpDir1Path};    ErrorId = "PSGalleryProvidedAsNameRepoPSet,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"},
-                  @{Type = "-Uri not specified";                         IncorrectHashTable = @{Name = $TestRepoName1};                        ErrorId = "NullUrlForRepositoriesParameterSetRegistration,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"},
+                  @{Type = "-Uri not specified";                         IncorrectHashTable = @{Name = $TestRepoName1};                        ErrorId = "NullUriForRepositoriesParameterSetRegistration,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"},
                   @{Type = "-Uri is not valid scheme";                   IncorrectHashTable = @{Name = $TestRepoName1; Uri="www.google.com"};  ErrorId = "InvalidUri,Microsoft.PowerShell.PowerShellGet.Cmdlets.RegisterPSResourceRepository"}
 
     It "not register incorrectly formatted Name type repo among correct ones when incorrect type is <Type>" -TestCases $testCases2 {
@@ -268,7 +268,7 @@ Describe "Test Register-PSResourceRepository" {
         $res = Get-PSResourceRepository -Name $TestRepoName1
 
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $relativeCurrentPath
+        $Res.Uri.LocalPath | Should -Contain $relativeCurrentPath
         $res.Trusted | Should -Be False
         $res.Priority | Should -Be 50
     }

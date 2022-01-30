@@ -41,7 +41,7 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir2Path
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir2Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir2Path
         $res.Priority | Should -Be 50
         $res.Trusted | Should -Be False
         $res.CredentialInfo | Should -BeNullOrEmpty
@@ -52,7 +52,7 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Name $TestRepoName1 -Priority 25
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Priority | Should -Be 25
         $res.Trusted | Should -Be False
         $res.CredentialInfo | Should -BeNullOrEmpty
@@ -63,7 +63,7 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Name $TestRepoName1 -Trusted
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Priority | Should -Be 50
         $res.Trusted | Should -Be True
         $res.CredentialInfo | Should -BeNullOrEmpty
@@ -74,7 +74,7 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Name $TestRepoName1 -CredentialInfo $credentialInfo1
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Priority | Should -Be 50
         $res.Trusted | Should -Be False
         $res.CredentialInfo.VaultName | Should -Be "testvault"
@@ -117,7 +117,7 @@ Describe "Test Set-PSResourceRepository" {
         $err[0].FullyQualifiedErrorId | Should -BeExactly "$ErrorId,Microsoft.PowerShell.PowerShellGet.Cmdlets.SetPSResourceRepository"
 
         $res = Get-PSResourceRepository -Name $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir3Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir3Path
         $res.Trusted | Should -Be False
 
         $res2 = Get-PSResourceRepository -Name $TestRepoName2
@@ -141,21 +141,21 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Repositories $arrayOfHashtables
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir2Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir2Path
         $res.Priority | Should -Be 50
         $res.Trusted | Should -Be False
         $res.CredentialInfo | Should -BeNullOrEmpty
 
         $res2 = Get-PSResourceRepository -Name $TestRepoName2
         $res2.Name | Should -Be $TestRepoName2
-        $res2.Url.LocalPath | Should -Contain $tmpDir2Path
+        $res2.Uri.LocalPath | Should -Contain $tmpDir2Path
         $res2.Priority | Should -Be 25
         $res2.Trusted | Should -Be False
         $res2.CredentialInfo | Should -BeNullOrEmpty
 
         $res3 = Get-PSResourceRepository -Name $TestRepoName3
         $res3.Name | Should -Be $TestRepoName3
-        $res3.Url.LocalPath | Should -Contain $tmpDir3Path
+        $res3.Uri.LocalPath | Should -Contain $tmpDir3Path
         $res3.Priority | Should -Be 50
         $res3.Trusted | Should -Be False
         $res3.CredentialInfo.VaultName | Should -Be "testvault"
@@ -164,7 +164,7 @@ Describe "Test Set-PSResourceRepository" {
 
         $res4 = Get-PSResourceRepository -Name $PSGalleryName
         $res4.Name | Should -Be $PSGalleryName
-        $res4.Url | Should -Contain $PSGalleryUri
+        $res4.Uri | Should -Contain $PSGalleryUri
         $res4.Priority | Should -Be 50
         $res4.Trusted | Should -Be True
         $res4.CredentialInfo | Should -BeNullOrEmpty
@@ -197,7 +197,7 @@ Describe "Test Set-PSResourceRepository" {
         $err[0].FullyQualifiedErrorId | Should -BeExactly "ErrorSettingIndividualRepoFromRepositories,Microsoft.PowerShell.PowerShellGet.Cmdlets.SetPSResourceRepository"
 
         $res = Get-PSResourceRepository -Name $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Priority | Should -Be 25
         $res.Trusted | Should -Be False
     }
@@ -207,7 +207,7 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Name $TestRepoName1 -Uri $relativeCurrentPath
         $res = Get-PSResourceRepository -Name $TestRepoName1
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $relativeCurrentPath
+        $Res.Uri.LocalPath | Should -Contain $relativeCurrentPath
         $res.Trusted | Should -Be False
         $res.Priority | Should -Be 50
     }
@@ -227,7 +227,7 @@ Describe "Test Set-PSResourceRepository" {
         $err[0].FullyQualifiedErrorId | Should -BeExactly "ErrorSettingIndividualRepoFromRepositories,Microsoft.PowerShell.PowerShellGet.Cmdlets.SetPSResourceRepository"
 
         $res = Get-PSResourceRepository -Name $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir1Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir1Path
         $res.Priority | Should -Be 25
         $res.Trusted | Should -Be False
         $res.CredentialInfo | Should -BeNullOrEmpty
@@ -238,14 +238,14 @@ Describe "Test Set-PSResourceRepository" {
         Set-PSResourceRepository -Name "localFileShareTestRepo" -Uri "\\hcgg.rest.of.domain.name\test\ITxx\team\NuGet\"
         $res = Get-PSResourceRepository -Name "localFileShareTestRepo"
         $res.Name | Should -Be "localFileShareTestRepo"
-        $Res.Url.LocalPath | Should -Contain "\\hcgg.rest.of.domain.name\test\ITxx\team\NuGet\"
+        $Res.Uri.LocalPath | Should -Contain "\\hcgg.rest.of.domain.name\test\ITxx\team\NuGet\"
     }
 
     It "set repository and see updated repository with -PassThru" {
         Register-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir1Path
         $res = Set-PSResourceRepository -Name $TestRepoName1 -Uri $tmpDir2Path -PassThru
         $res.Name | Should -Be $TestRepoName1
-        $Res.Url.LocalPath | Should -Contain $tmpDir2Path
+        $Res.Uri.LocalPath | Should -Contain $tmpDir2Path
         $res.Priority | Should -Be 50
         $res.Trusted | Should -Be False
     }
